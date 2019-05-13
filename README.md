@@ -7,7 +7,7 @@ Tutorial to refer [https://sivalabs.in/2017/08/spring-cloud-tutorials-introducti
 Bring up the config server on localhost and hit the url - http://localhost:8001/product-service/dev
 
 This will show up:
-'''
+```
 {
 name: "product-service",
 profiles: [
@@ -26,4 +26,4 @@ key.com: "shubham"
 }
 ]
 }
-'''
+```
