@@ -9,21 +9,21 @@ Bring up the config server on localhost and hit the url - http://localhost:8001/
 This will show up:
 ```
 {
-name: "product-service",
-profiles: [
-"dev"
-],
-label: null,
-version: "c49507cf24dd68bdf1e0eca172be6e133d5fd385",
-state: null,
-propertySources: [
-{
-name: "https://github.com/goelshubham/external-properties.git/product-service/product-service-dev.properties",
-source: {
-property_key: "property_value",
-key.com: "shubham"
-}
-}
-]
+  name: "product-service",
+  profiles: [
+    "dev"
+  ],
+  label: null,
+  version: "c49507cf24dd68bdf1e0eca172be6e133d5fd385",
+  state: null,
+  propertySources: [
+    {
+      name: "https://github.com/goelshubham/external-properties.git/product-service/product-service-dev.properties",
+      source: {
+        property_key: "property_value",
+        key.com: "shubham"
+      }
+    }
+  ]
 }
 ```
