@@ -124,6 +124,13 @@ Spring Cloud suggests to use Spring Cloud Bus. Spring Cloud Bus links the nodes 
 Refer this official documentation here [https://cloud.spring.io/spring-cloud-static/spring-cloud-bus/2.1.0.RELEASE/single/spring-cloud-bus.html]
 
 My changes are as follow:
+0. Add Cloud Bus dependency in build file.
+```
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+```
 1. Installed RabbitMQ on local machine.
 2. In microservice, product-service, I added following properties in application properties to connect it with RabbitMQ installation.
 ```
