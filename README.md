@@ -41,3 +41,30 @@ Spring Cloud Config Server exposes the following REST endpoints to get applicati
 /{label}/{application}-{profile}.properties
 ```
 Here {application} refers to value of spring.config.name property, {profile} is an active profile and {label} is an optional git label (defaults to “master”).
+
+### Encrypting properties in the externalized repository
+We are saving all the properties of our microservices in a git repo but there might be some important properties which we want to hide or encrypt in order to protect from misuse.
+
+Spring Cloud config server provides two REST apis to encrypt and decrypt such important properties. One feature that I like is the presence of /encrypt and /decrypt endpoints which accept POST requests with a payload to be encrypted. A private key needs to be configured for the server. For test purposes you can add this to the bootstrap.properties file of the config server, but ideally it is stored securely separate from source.
+
+Steps to follow:
+1. To use the encryption and decryption features you need the full-strength JCE installed in your JVM (it’s not there by default). You can download the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files" from Oracle, and follow instructions for installation (essentially replace the 2 policy files in the JRE lib/security directory with the ones that you downloaded).
+
+2. add bootstrap.properties file in config server and enter a property
+```
+encrypt.key=secret
+```
+The phrase 'secret' cam be anything confidential. Now
+3. Now go to postman and hit the configserver url (with /encrypt) with POST request and in body section enter the property value which you want to encrypt.
+
+We can also use curl commands...
+
+```
+curl -X POST localhost:8001/encrypt -d shubham
+2d64749ca1397e19176839a3430aa2566686eb522786a9ca2874655100c17cc1
+```
+
+4. Now we encrypted the value 'shubham' to 2d64749ca1397e19176839a3430aa2566686eb522786a9ca2874655100c17cc1. In application property file of application we need to follow {cipher}2d64749ca1397e19176839a3430aa2566686eb522786a9ca2874655100c17cc1 in order to tell config server to decrypt the value before using it.
+
+
+
