@@ -172,4 +172,8 @@ management:
 4. Now change a property in externalized property files. And hit this endpoint - http://localhost:8002/actuator/bus-refresh
 This will refresh all properties for all microservices configured to same config server.
 
+Please note all this cloud bus configuration can also be done in config server itself instead of microservices.
+1. I added spring-cloud-starter-bus-amqp in pom.xml of config server and added same properties in application.properties and bootstrap.yml file.
+2. Now refreshing from cloud config server also refreshes all properties - http://localhost:8001/actuator/bus-refresh
+
 
