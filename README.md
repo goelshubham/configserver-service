@@ -66,5 +66,35 @@ curl -X POST localhost:8001/encrypt -d shubham
 
 4. Now we encrypted the value 'shubham' to 2d64749ca1397e19176839a3430aa2566686eb522786a9ca2874655100c17cc1. In application property file of application we need to follow {cipher}2d64749ca1397e19176839a3430aa2566686eb522786a9ca2874655100c17cc1 in order to tell config server to decrypt the value before using it.
 
+Now I changed a property in application properties:
+```
+property_key=property_value
+key.com=shubham
+encrypted.key={cipher}dd7fba640c89443459aafba14cb72336713dd5897f21210cf0aef985f3010692
+```
+And when I hit http://localhost:8001/product-service/dev, I get following result where I see decrypted value
+
+```
+{
+  name: "product-service",
+  profiles: [
+    "dev"
+  ],
+  label: null,
+  version: "fbb2d3e0278d75b92451cd2f374b9eb64afd391a",
+  state: null,
+  propertySources: [
+    {
+      name: "https://github.com/goelshubham/external-properties.git/product-service/product-service-dev.properties",
+      source: {
+        property_key: "property_value",
+        key.com: "shubham",
+        encrypted.key: "dbpassword"
+      }
+    }
+  ]
+}
+```
+
 
 
