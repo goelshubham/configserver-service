@@ -2,7 +2,12 @@
 
 This is a basic Spring Cloud config server example. Actual externalized properties are commited in another github repository.
 
-Tutorial to refer [https://sivalabs.in/2017/08/spring-cloud-tutorials-introduction-to-spring-cloud-config-server/]
+Tutorial to refer:
+1. https://sivalabs.in/2017/08/spring-cloud-tutorials-introduction-to-spring-cloud-config-server/
+2. https://failedtofunction.com/configuration-with-spring-cloud-config/
+3.
+4.
+5. 
 
 Bring up the config server on localhost and hit the url - http://localhost:8001/product-service/dev
 
