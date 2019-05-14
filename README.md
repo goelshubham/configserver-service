@@ -96,5 +96,80 @@ And when I hit http://localhost:8001/product-service/dev, I get following result
 }
 ```
 
+### Changing application properties with @RefreshScope and without the need to restart application
+
+Annotate your application controller class with @RefreshScope like below:
+```
+@RefreshScope
+@RestController
+@RequestMapping(value="/productservice")
+public class ProductServiceController {
+	
+	@Value("${key.com}")
+	private String key;
+	
+	@RequestMapping(value="/products", method=RequestMethod.GET)
+	public String getProducts() {
+		return "Property from external file is -> " + key;
+	}
+
+}
+```
+As per the tutorial, once we change property in external application property file, we need to hit /refresh endpoint to get the properties reflected but when I tried I didn't need to explicitly refresh them. 
+
+There is a limitation in using only @RefreshScope and /refresh endpoint and the limitation is that we need to do it for all the microservices. If we change a prop of one microservice, we need to do /refresh for that application.
+
+Spring Cloud suggests to use Spring Cloud Bus. Spring Cloud Bus links the nodes of a distributed system with a lightweight message broker. This broker can then be used to broadcast state changes (such as configuration changes) or other management instructions. A key idea is that the bus is like a distributed actuator for a Spring Boot application that is scaled out. However, it can also be used as a communication channel between apps. This project provides starters for either an AMQP broker or Kafka as the transport.
+
+Refer this official documentation here [https://cloud.spring.io/spring-cloud-static/spring-cloud-bus/2.1.0.RELEASE/single/spring-cloud-bus.html]
+
+My changes are as follow:
+1. Installed RabbitMQ on local machine.
+2. In microservice, product-service, I added following properties in application properties to connect it with RabbitMQ installation.
+```
+spring.rabbitmq.host=localhost
+# by default rabbit mq starts on port 5672. I have verified it on my Mac
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+```
+3. bootstrap.yml looks like below:
+```
+spring:
+  cloud:
+    config:
+     uri: http://localhost:8001
+     failFast: true
+     name: product-service
+---
+spring:
+  profiles: dev
+---
+spring:
+  profiles:
+    active: dev
+---
+legacy:
+  context:
+    enabled: true
+management:
+  endpoint:
+    env:
+      enabled: true 
+    health:
+      enabled: true
+    info:
+      enabled: true
+    threaddump:
+      enabled: true
+    refresh:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: env, bus-refresh
+```
+4. Now change a property in externalized property files. And hit this endpoint - http://localhost:8002/actuator/bus-refresh
+This will refresh all properties for all microservices configured to same config server.
 
 
